@@ -5,7 +5,7 @@ import './stylesheets/mystyles.css';
 
 console.log('Webpack Working!!!');
 // Default parameters Es6/2015
-const show = (m = 'Bienvenidos') => {
+const show = (m = 'Bienvenido') => {
   alert(m);
 };
 
