@@ -3,7 +3,8 @@ import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
-import logger from 'morgan';
+import morgan from 'morgan';
+import winston from 'winston';
 
 import indexRouter from '@s-routes/index';
 import usersRouter from '@s-routes/users';
@@ -30,16 +31,20 @@ if (env === 'development') {
     'Webpack-hot-middleware/client?reload=true&timeout=1000',
     webpackDevConfig.entry,
   ];
+
   // Agregar plugin
   webpackDevConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
+
   // compilador
   const compiler = webpack(webpackDevConfig);
+
   // Agregando middleware a cadena
   app.use(
     WebpackDevMiddleware(compiler, {
       publicPath: webpackDevConfig.output.publicPath,
     }),
   );
+
   // webpack hot middleware
   app.use(WebpackHotMiddleware(compiler));
 } else {
@@ -50,7 +55,7 @@ if (env === 'development') {
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
-app.use(logger('dev'));
+app.use(morgan('combined', { stream: winston.stream }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
