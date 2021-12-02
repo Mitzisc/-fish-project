@@ -10,7 +10,6 @@ const show = (m = 'Bienvenidos') => {
 };
 
 show();
-
 function resolveAfter2Seconds() {
   return new Promise((resolve) => {
     setTimeout(() => {
