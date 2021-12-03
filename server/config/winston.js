@@ -2,19 +2,18 @@
 import winston, { format } from 'winston';
 import appRoot from 'app-root-path';
 
-// Componentes para crear el formato
-const { combine, timestamp, printf, uncolorize, json, colorize } = format;
+// Componentes para crear el formato personalizado
+const { combine, timestamp, printf, uncolorize, colorize, json } = format;
 
-// Perfil color para log
+// Creando el Perfin de color para el log
 const colors = {
   error: 'red',
-  warn: 'yellow',
+  warn: 'yelow',
   info: 'green',
   http: 'magenta',
   debug: 'green',
 };
-
-// Agregar perfil a winston
+// Agregando el Perfil a winston
 winston.addColors(colors);
 
 // Formato de consola
@@ -24,12 +23,8 @@ const myFormat = combine(
   printf((info) => `${info.timestamp} ${info.level}: ${info.message}`),
 );
 
-// Formato salida archivos log
-const myFileFormat = combine(
-  uncolorize(),
-  timestamp(),
-  json(),
-);
+// Formato para salida de archivos de log
+const myFileFormat = combine(uncolorize({ all: true }), timestamp(), json());
 
 // Creando objetos de configuracion
 const options = {
@@ -37,7 +32,8 @@ const options = {
     level: 'info',
     filename: `${appRoot}/server/logs/infos.log`,
     handleExceptions: true,
-    maxsize: 5242880, // 5MB
+    maxsize: 5242880, 
+    // 5MG
     maxFiles: 5,
     format: myFileFormat,
   },
@@ -45,7 +41,7 @@ const options = {
     level: 'warn',
     filename: `${appRoot}/server/logs/warns.log`,
     handleExceptions: true,
-    maxsize: 5242880, // 5MB
+    maxsize: 5242880, // 5MG
     maxFiles: 5,
     format: myFileFormat,
   },
@@ -53,7 +49,7 @@ const options = {
     level: 'error',
     filename: `${appRoot}/server/logs/errors.log`,
     handleExceptions: true,
-    maxsize: 5242880, // 5MB
+    maxsize: 5242880, // 5MG
     maxFiles: 5,
     format: myFileFormat,
   },
@@ -61,25 +57,24 @@ const options = {
     level: 'debug',
     handleExceptions: true,
     format: myFormat,
-  }
+  },
 };
 
-// Creando la instancia del logger
+// Creando instancia logger
 const logger = winston.createLogger({
   transports: [
-    new winston.transports.File(options,infoFile),
-    new winston.transports.File(options,warnFile),
-    new winston.transports.File(options,errorFile),
-    new winston.transports.Console(options,console),
+    new winston.transports.File(options.infoFile),
+    new winston.transports.File(options.warnFile),
+    new winston.transports.File(options.errorFile),
+    new winston.transports.Console(options.Console),
   ],
-  exitOnError: false, // No finaliza en excepciones manejadas
+  exitOnError: false,
 });
 
-// Manejo de un stream de entrada
+// Manejo stream entrada
 logger.stream = {
   write(message) {
     logger.info(message);
   },
 };
-
 export default logger;
