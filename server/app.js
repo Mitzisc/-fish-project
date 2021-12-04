@@ -4,7 +4,7 @@ import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
-import winston from 'winston';
+import winston from '@server/config/winston';
 
 import indexRouter from '@s-routes/index';
 import usersRouter from '@s-routes/users';
@@ -31,20 +31,16 @@ if (env === 'development') {
     'Webpack-hot-middleware/client?reload=true&timeout=1000',
     webpackDevConfig.entry,
   ];
-
   // Agregar plugin
   webpackDevConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
-
   // compilador
   const compiler = webpack(webpackDevConfig);
-
   // Agregando middleware a cadena
   app.use(
     WebpackDevMiddleware(compiler, {
       publicPath: webpackDevConfig.output.publicPath,
     }),
   );
-
   // webpack hot middleware
   app.use(WebpackHotMiddleware(compiler));
 } else {
