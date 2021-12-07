@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-console */
 /* eslint-disable no-alert */
 import './stylesheets/style.css';
@@ -7,6 +8,7 @@ console.log('Webpack Working!!!');
 // Default parameters Es6/2015
 const show = (m = 'Bienvenidos | Equipo de trabajo') => {
   alert(m);
+// eslint-disable-next-line prettier/prettier
 };
 
 show();
