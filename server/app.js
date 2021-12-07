@@ -1,3 +1,6 @@
+/* eslint-disable prettier/prettier */
+/* eslint-disable import/no-unresolved */
+/* eslint-disable prettier/prettier */
 /* eslint-disable no-console */
 import createError from 'http-errors';
 import express from 'express';

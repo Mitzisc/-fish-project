@@ -105,7 +105,9 @@ dist
 
 # Ignorando dependencias
 dist-server
+node_modules
 
-# Ignorando logs
+#ignorando los archivos de logs
 logs
 *.logs
+
