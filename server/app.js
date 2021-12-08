@@ -49,7 +49,7 @@ if (env === 'development') {
   // webpack hot middleware
   app.use(WebpackHotMiddleware(compiler));
 } else {
-  console.log('> Excecuting in Production Mode... ');
+  console.log('> Excecuting in Production Mode...');
 }
 
 // view engine setup
