@@ -1,45 +1,25 @@
 #!/usr/bin/env node
+// AGREGANDO IMPORT DE WINSTON
+import winston from '@server/config/winston';
 
 /**
  * Module dependencies.
  */
+// CAMBIO A IMPORT (JAVASCRIPT MODERNO)
+import Debug from 'debug';
+import http from 'http';
+import app from '../app';
 
-const app = require('../app');
-const debug = require('debug')('projnotes:server');
-const http = require('http');
-
-/**
- * Get port from environment and store in Express.
- */
-
-const port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
-/**
- * Create HTTP server.
- */
-
-console.log(`--> Se crea server en http`);
-const server = http.createServer(app);
-
-/**
- * Listen on provided port, on all network interfaces.
- */
-
-server.listen(port, () => {
-  console.log(`--> Sistema escuchando el puerto ${port}`);
-});
-server.on('error', onError);
-server.on('listening', onListening);
+const debug = Debug('projnotes:server');
 
 /**
  * Normalize a port into a number, string, or false.
  */
-
+// SE REALIZO EL CAMBIO DE POSICION nomalizePort
 function normalizePort(val) {
   const port = parseInt(val, 10);
 
-  if (isNaN(port)) {
+  if (Number.isNaN(port)) {
     // named pipe
     return val;
   }
@@ -53,16 +33,23 @@ function normalizePort(val) {
 }
 
 /**
+ * Get port from environment and store in Express.
+ */
+// CAMBIO EN normalizePort
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+// CAMBIO EN const bind
+const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
+
+/**
  * Event listener for HTTP server "error" event.
  */
-
+// CAMBIO DE POSICION onError y onListening
 function onError(error) {
   if (error.syscall !== 'listen') {
     console.log(`--> Error en ${error}`);
     throw error;
   }
-
-  const bind = typeof port === 'string' ? `Pipe ${port}` : `Port ${port}`;
 
   // handle specific listen errors with friendly messages
   switch (error.code) {
@@ -80,12 +67,28 @@ function onError(error) {
 }
 
 /**
+ * Create HTTP server.
+ */
+// CAMBIO DE POSICION server
+// console.log(`--> Se crea server en http`);
+const server = http.createServer(app);
+
+/**
  * Event listener for HTTP server "listening" event.
  */
-
+// CAMBIO EN EL NOMBRE DE LA VARIABLE bin por binAdr
 function onListening() {
   const addr = server.address();
-  const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
-  debug(`Listening on ${bind}`);
-  console.log(`--> Ejecucion listening ${bind}`);
+  const bindAdr = 
+    typeof addr === 'string' ? `pipe ${addr}` : `port ${addr.port}`;
+  debug(`Listening on ${bindAdr}`);
+  // console.log(`--> Ejecucion listening ${bind}`);
 }
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
