@@ -6,7 +6,9 @@ import createError from 'http-errors';
 import express from 'express';
 import path from 'path';
 import cookieParser from 'cookie-parser';
+// IMPORTAREMOS A MORGAN
 import morgan from 'morgan';
+// IMPORTAREMOS WISTON JUNTO CON LA RUTA 
 import winston from '@server/config/winston';
 
 import indexRouter from '@s-routes/index';
@@ -47,13 +49,15 @@ if (env === 'development') {
   // webpack hot middleware
   app.use(WebpackHotMiddleware(compiler));
 } else {
-  console.log('> Excecuting in Production Mode... ');
+  console.log('> Excecuting in Production Mode...');
 }
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
+// DE IGUAL MANERA IMPORTAREMOS MORGAN COMO NUESTRO MIDDLEWARE
+// ENLAZAMOS AMBOS LOGGERS COMO LO SON WINSTON COMO
 app.use(morgan('combined', { stream: winston.stream }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
